@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DroneVideoStream</string>
+    <string name="play">Play</string>
+    <string name="enter_rtsp_url">Enter RTSP URL</string>
+</resources>

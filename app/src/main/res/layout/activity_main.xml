@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Background Image -->
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_stream"
+        android:scaleType="centerCrop"
+        android:contentDescription="background"
+        android:alpha="0.3" />
+
+    <!-- Main Content Overlay -->
+    <LinearLayout
+        android:id="@+id/overlay_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center"
+        android:background="#001F1F1F"> <!-- translucent dark overlay -->
+
+        <!-- Folder Button Top Right -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+
+            <ImageButton
+                android:id="@+id/file_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="10dp"
+                android:background="@drawable/bg_circle_button"
+                android:src="@drawable/baseline_folder_24"
+                android:contentDescription="Open saved files"
+                app:tint="#FFFFFF" />
+        </LinearLayout>
+
+        <!-- Input and Button Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="100dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/rtsp_url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter RTSP/RTMP URL"
+                android:inputType="textUri"
+                android:padding="16dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#CCCCCC"
+                android:background="@drawable/bg_input_field"
+                android:elevation="4dp" />
+
+            <Button
+                android:id="@+id/play_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Play"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:backgroundTint="#03DAC5"
+                android:textColor="#000000"
+                android:padding="12dp"
+                android:background="@drawable/bg_rounded_button"
+                android:elevation="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+
+
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/main"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:padding="16dp"-->
+<!--    android:orientation="vertical"-->
+<!--    tools:context=".MainActivity">-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/file_button"-->
+<!--        android:layout_width="48dp"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:layout_margin="26dp"-->
+<!--        android:padding="10dp"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:src="@drawable/baseline_folder_24"-->
+<!--        android:contentDescription="folder" />-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <EditText-->
+<!--            android:id="@+id/rtsp_url"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:hint="@string/enter_rtsp_url"-->
+<!--            android:inputType="textUri"-->
+<!--            android:minHeight="48dp"-->
+<!--            android:textColorHint="#546E7A"-->
+<!--            tools:ignore="Autofill,VisualLintTextFieldSize" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/play_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/play"-->
+<!--            android:layout_marginTop="8dp"/>-->
+<!--    </LinearLayout>-->
+
+
+
+
+<!--</LinearLayout>-->

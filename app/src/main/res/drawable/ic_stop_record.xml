@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#787777" />
+        </shape>
+    </item>
+    <item android:gravity="center">
+        <bitmap
+            android:src="@drawable/baseline_pause_24"
+            android:gravity="center" />
+    </item>
+</layer-list>

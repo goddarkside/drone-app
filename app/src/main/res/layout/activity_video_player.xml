@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_stream"
+    tools:context=".VideoPlayerActivity">
+
+    <!-- Back Button (Top Left) -->
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/record_circle"
+        android:elevation="6dp">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:contentDescription="Back"
+            app:tint="#FFFFFF" />
+    </FrameLayout>
+
+    <!-- Record Button (Top Right) -->
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/record_circle"
+        android:elevation="6dp">
+
+        <ImageButton
+            android:id="@+id/record_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:src="@drawable/round_fiber_manual_record_24"
+            android:contentDescription="Record"/>
+    </FrameLayout>
+
+    <!-- Recording Indicator (Top Center) -->
+    <View
+        android:id="@+id/recording_indicator"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/red_circle"
+        android:visibility="gone"
+        android:elevation="4dp" />
+
+
+        <SurfaceView
+            android:id="@+id/video_surface"
+            android:layout_width="500dp"
+            android:layout_height="500dp"
+            android:layout_margin="10dp"
+            android:layout_centerInParent="true"
+            android:rotation="90"/>
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+        <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:id="@+id/main"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".VideoPlayerActivity">-->
+
+<!--    <SurfaceView-->
+<!--        android:id="@+id/video_surface"-->
+<!--        android:layout_width="600dp"-->
+<!--        android:layout_height="400dp"-->
+<!--        android:layout_centerInParent="true" />-->
+<!--    <FrameLayout-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_margin="26dp"-->
+<!--        android:padding="10dp"-->
+<!--        android:background="@drawable/record_circle">-->
+<!--        <ImageButton-->
+<!--            android:id="@+id/back_button"-->
+<!--            android:layout_width="68dp"-->
+<!--            android:layout_height="68dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:src="@drawable/baseline_arrow_back_24"-->
+<!--            android:contentDescription="Back" />-->
+<!--    </FrameLayout>-->
+
+
+<!--    <FrameLayout-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_margin="26dp"-->
+<!--        android:padding="10dp"-->
+<!--        android:background="@drawable/record_circle">-->
+<!--        <ImageButton-->
+<!--            android:id="@+id/record_button"-->
+<!--            android:layout_width="68dp"-->
+<!--            android:layout_height="68dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:src="@drawable/baseline_play_arrow_24"-->
+<!--            android:contentDescription="Record" />-->
+<!--    </FrameLayout>-->
+
+
+
+<!--    <View-->
+<!--        android:id="@+id/recording_indicator"-->
+<!--        android:layout_width="16dp"-->
+<!--        android:layout_height="16dp"-->
+<!--        android:layout_margin="50dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/red_circle"-->
+<!--        android:visibility="gone"/>-->
+
+
+<!--</RelativeLayout>-->
+
+
