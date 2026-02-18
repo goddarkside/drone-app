@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -9,124 +10,107 @@
 
     <!-- Background Image -->
     <ImageView
-        android:id="@+id/background_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/bg_stream"
+        android:id="@+id/backgroundImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:contentDescription="background"
-        android:alpha="0.3" />
+        android:src="@drawable/bg_stream"
+        android:alpha="0.35"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Main Content Overlay -->
-    <LinearLayout
-        android:id="@+id/overlay_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center"
-        android:background="#001F1F1F"> <!-- translucent dark overlay -->
+    <!-- Dark Gradient Overlay -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_gradient_dark"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Folder Button Top Right -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end">
+    <!-- Folder Button (Top Right Floating) -->
+    <ImageButton
+        android:id="@+id/file_button"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_circle_button"
+        android:src="@drawable/baseline_folder_24"
+        android:contentDescription="Open recordings"
+        app:tint="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-            <ImageButton
-                android:id="@+id/file_button"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="10dp"
-                android:background="@drawable/bg_circle_button"
-                android:src="@drawable/baseline_folder_24"
-                android:contentDescription="Open saved files"
-                app:tint="#FFFFFF" />
-        </LinearLayout>
+    <!-- Center Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/inputCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="#CC1E1E1E"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Input and Button Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="100dp"
-            android:gravity="center">
+            android:padding="24dp">
 
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Drone Live Stream"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center_horizontal"/>
+
+            <!-- Subtitle -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter RTSP / RTMP URL"
+                android:textSize="14sp"
+                android:textColor="#B0B0B0"
+                android:layout_marginTop="6dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <!-- URL Input -->
             <EditText
                 android:id="@+id/rtsp_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter RTSP/RTMP URL"
+                android:layout_marginTop="24dp"
+                android:hint="rtsp:// or rtmp://"
                 android:inputType="textUri"
-                android:padding="16dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#CCCCCC"
+                android:textColor="@android:color/white"
+                android:textColorHint="#888888"
                 android:background="@drawable/bg_input_field"
-                android:elevation="4dp" />
+                android:padding="16dp"
+                tools:ignore="Autofill"/>
 
+            <!-- Play Button -->
             <Button
                 android:id="@+id/play_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Play"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:backgroundTint="#03DAC5"
+                android:layout_height="54dp"
+                android:layout_marginTop="20dp"
+                android:text="START STREAM"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:textColor="#000000"
-                android:padding="12dp"
-                android:background="@drawable/bg_rounded_button"
-                android:elevation="4dp" />
+                android:textAllCaps="false"
+                android:background="@drawable/bg_primary_button"/>
         </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
-
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:id="@+id/main"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:padding="16dp"-->
-<!--    android:orientation="vertical"-->
-<!--    tools:context=".MainActivity">-->
-
-<!--    <ImageButton-->
-<!--        android:id="@+id/file_button"-->
-<!--        android:layout_width="48dp"-->
-<!--        android:layout_height="48dp"-->
-<!--        android:layout_margin="26dp"-->
-<!--        android:padding="10dp"-->
-<!--        android:background="@android:color/transparent"-->
-<!--        android:src="@drawable/baseline_folder_24"-->
-<!--        android:contentDescription="folder" />-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:orientation="vertical"-->
-<!--        android:gravity="center"-->
-<!--        android:layout_height="match_parent">-->
-<!--        <EditText-->
-<!--            android:id="@+id/rtsp_url"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:hint="@string/enter_rtsp_url"-->
-<!--            android:inputType="textUri"-->
-<!--            android:minHeight="48dp"-->
-<!--            android:textColorHint="#546E7A"-->
-<!--            tools:ignore="Autofill,VisualLintTextFieldSize" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/play_button"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/play"-->
-<!--            android:layout_marginTop="8dp"/>-->
-<!--    </LinearLayout>-->
-
-
-
-
-<!--</LinearLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

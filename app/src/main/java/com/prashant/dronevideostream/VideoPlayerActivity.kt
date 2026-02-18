@@ -1,115 +1,146 @@
-package com.prashant.dronevideostream;
+package com.prashant.dronevideostream
 
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.SurfaceView;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import android.net.Uri
+import android.os.*
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.prashant.dronevideostream.databinding.ActivityVideoPlayerBinding
+import org.videolan.libvlc.LibVLC
+import org.videolan.libvlc.Media
+import org.videolan.libvlc.MediaPlayer
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
+class VideoPlayerActivity : AppCompatActivity() {
 
-import org.videolan.libvlc.LibVLC;
-import org.videolan.libvlc.Media;
-import org.videolan.libvlc.MediaPlayer;
+    private lateinit var binding: ActivityVideoPlayerBinding
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+    private var libVLC: LibVLC? = null
+    private var mediaPlayer: MediaPlayer? = null
 
-public class VideoPlayerActivity extends AppCompatActivity {
-    private LibVLC libVLC;
-    private MediaPlayer mediaPlayer;
-    private SurfaceView surfaceView;
-    private String currentRtspUrl;
-    private boolean isRecording = false;
-    private View recordingIndicator;
+    private var currentRtspUrl = ""
+    private var isRecording = false
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_video_player);
+    private var recordStartTime = 0L
+    private var recordFile: File? = null
 
-        surfaceView = findViewById(R.id.video_surface);
-        ImageButton backBtn = findViewById(R.id.back_button);
-        ImageButton recordBtn = findViewById(R.id.record_button);
-
-        recordingIndicator = findViewById(R.id.recording_indicator);
-
-        ArrayList<String> options = new ArrayList<>();
-        libVLC = new LibVLC(this, options);
-        mediaPlayer = new MediaPlayer(libVLC);
-        mediaPlayer.getVLCVout().setVideoView(surfaceView);
-        mediaPlayer.getVLCVout().attachViews();
-
-        currentRtspUrl = getIntent().getStringExtra("RTSP_URL");
-
-        // Play without recording initially
-        playStream(currentRtspUrl, false);
-
-        backBtn.setOnClickListener(v -> finish());
-
-        recordBtn.setOnClickListener(v -> {
-            isRecording = !isRecording;
-            if (isRecording) {
-                Toast.makeText(this, "Recording started", Toast.LENGTH_SHORT).show();
-                recordingIndicator.setVisibility(View.VISIBLE);
-            } else {
-                Toast.makeText(this, "Recording stopped", Toast.LENGTH_SHORT).show();
-                recordingIndicator.setVisibility(View.GONE);
-            }
-
-            // Stop previous playback and restart with or without recording
-            mediaPlayer.stop();
-            playStream(currentRtspUrl, isRecording);
-        });
+    private val hudHandler = Handler(Looper.getMainLooper())
+    private val hudRunnable = object : Runnable {
+        override fun run() {
+            updateRecordingHud()
+            hudHandler.postDelayed(this, 1000)
+        }
     }
 
-    private void playStream(String rtspUrl, boolean record) {
-        ArrayList<String> mediaOptions = new ArrayList<>();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityVideoPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        currentRtspUrl = intent.getStringExtra("RTSP_URL") ?: ""
+
+        initVlc()
+        playStream(currentRtspUrl, false)
+
+        binding.backButton.setOnClickListener { finish() }
+        binding.recordButton.setOnClickListener { toggleRecording() }
+    }
+
+    private fun initVlc() {
+        libVLC = LibVLC(this, arrayListOf())
+        mediaPlayer = MediaPlayer(libVLC)
+
+        mediaPlayer?.vlcVout?.apply {
+            setVideoView(binding.videoSurface)
+            attachViews()
+        }
+    }
+
+    private fun toggleRecording() {
+        isRecording = !isRecording
+
+        if (isRecording) {
+            recordStartTime = System.currentTimeMillis()
+            binding.recordingHud.visibility = View.VISIBLE
+            hudHandler.post(hudRunnable)
+        } else {
+            stopRecordingHud()
+        }
+
+        mediaPlayer?.stop()
+        playStream(currentRtspUrl, isRecording)
+    }
+
+    private fun playStream(rtspUrl: String, record: Boolean) {
+        val mediaOptions = arrayListOf<String>()
 
         if (record) {
-            File dir = new File(getExternalFilesDir(null), "DroneRecords");
-            if (!dir.exists()) dir.mkdirs();
+            val dir = File(getExternalFilesDir(null), "DroneRecords")
+            if (!dir.exists()) dir.mkdirs()
 
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-            File outputFile = new File(dir, "drone_record_" + timestamp + ".mp4");
-            String outputPath = outputFile.getAbsolutePath();
+            val timestamp = SimpleDateFormat(
+                "yyyyMMdd_HHmmss",
+                Locale.getDefault()
+            ).format(Date())
 
-            // VLC sout options
-            String sout = ":sout=#duplicate{dst=display,dst=std{access=file,mux=ts,dst=" + outputPath + "}}";
-            mediaOptions.add(sout);
-            mediaOptions.add(":no-sout-all");
-            mediaOptions.add(":sout-keep");
+            recordFile = File(dir, "drone_record_$timestamp.mp4")
 
-            Log.d("DroneRecording", "Recording drone stream to: " + outputPath);
+            val sout =
+                ":sout=#duplicate{dst=display,dst=std{access=file,mux=ts,dst=${recordFile!!.absolutePath}}}"
+
+            mediaOptions.add(sout)
+            mediaOptions.add(":no-sout-all")
+            mediaOptions.add(":sout-keep")
         }
 
-        Media media = new Media(libVLC, Uri.parse(rtspUrl));
-        media.setHWDecoderEnabled(true, false);
-
-        for (String opt : mediaOptions) {
-            media.addOption(opt);
+        val media = Media(libVLC, Uri.parse(rtspUrl)).apply {
+            setHWDecoderEnabled(true, false)
+            mediaOptions.forEach { addOption(it) }
         }
 
-        mediaPlayer.setMedia(media);
-        mediaPlayer.play();
+        mediaPlayer?.media = media
+        media.release()
+        mediaPlayer?.play()
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
+    private fun updateRecordingHud() {
+        val elapsed = System.currentTimeMillis() - recordStartTime
+        val seconds = (elapsed / 1000).toInt()
+        val mins = seconds / 60
+        val secs = seconds % 60
+
+        binding.tvRecTimer.text = String.format("%02d:%02d", mins, secs)
+
+        recordFile?.let {
+            val sizeMb = it.length() / (1024 * 1024)
+            binding.tvRecSize.text = "$sizeMb MB"
         }
-        if (libVLC != null) {
-            libVLC.release();
+
+        binding.recDot.alpha =
+            if (binding.recDot.alpha == 1f) 0.3f else 1f
+    }
+
+    private fun stopRecordingHud() {
+        hudHandler.removeCallbacks(hudRunnable)
+        binding.recordingHud.visibility = View.GONE
+        recordFile = null
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (isRecording) {
+            isRecording = false
+            stopRecordingHud()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.stop()
+        mediaPlayer?.vlcVout?.detachViews()
+        mediaPlayer?.release()
+        libVLC?.release()
     }
 }
