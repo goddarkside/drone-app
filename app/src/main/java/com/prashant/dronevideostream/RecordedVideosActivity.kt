@@ -16,7 +16,6 @@ class RecordedVideosActivity : AppCompatActivity() {
     private val videoFiles = mutableListOf<File>()
     private val fileNames = mutableListOf<String>()
 
-    private lateinit var adapter: VideoRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +53,15 @@ class RecordedVideosActivity : AppCompatActivity() {
 
     private fun confirmDelete(file: File, position: Int) {
         AlertDialog.Builder(this)
-            .setTitle("Delete video?")
-            .setMessage("This video will be permanently deleted.")
-            .setPositiveButton("Delete") { _, _ ->
+            .setTitle(R.string.delete_video_title)
+            .setMessage(R.string.delete_video_message)
+            .setPositiveButton(R.string.delete) { _, _ ->
                 if (file.delete()) {
                     videoFiles.removeAt(position)
                     binding.recyclerView.adapter?.notifyItemRemoved(position)
                 }
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 
@@ -78,7 +77,7 @@ class RecordedVideosActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_STREAM, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        startActivity(Intent.createChooser(intent, "Share video"))
+        startActivity(Intent.createChooser(intent, getString(R.string.share_video)))
     }
 
     private fun playVideo(file: File) {

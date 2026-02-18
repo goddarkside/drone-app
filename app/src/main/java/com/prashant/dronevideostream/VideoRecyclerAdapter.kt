@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.prashant.dronevideostream.databinding.ListItemVideoBinding
+import kotlinx.coroutines.*
 import java.io.File
-import kotlin.math.roundToInt
 
 class VideoRecyclerAdapter(
     private val videos: MutableList<File>,
@@ -16,14 +16,31 @@ class VideoRecyclerAdapter(
     private val onDelete: (File, Int) -> Unit
 ) : RecyclerView.Adapter<VideoRecyclerAdapter.VideoViewHolder>() {
 
+    private val adapterScope = CoroutineScope(Dispatchers.Main + Job())
+
     inner class VideoViewHolder(
         private val binding: ListItemVideoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private var job: Job? = null
+
         fun bind(file: File, position: Int) {
             binding.txtName.text = file.name
-            binding.txtMeta.text = buildMeta(file)
-            binding.imgThumbnail.setImageBitmap(getThumbnail(file))
+            
+            // Clear previous data / placeholders
+            binding.imgThumbnail.setImageBitmap(null)
+            binding.txtMeta.text = "..."
+
+            job?.cancel()
+            job = adapterScope.launch {
+                val thumbnail = withContext(Dispatchers.IO) { getThumbnail(file) }
+                val metaText = withContext(Dispatchers.IO) { buildMeta(file) }
+
+                if (isActive) {
+                    binding.imgThumbnail.setImageBitmap(thumbnail)
+                    binding.txtMeta.text = metaText
+                }
+            }
 
             binding.root.setOnClickListener {
                 onClick(file)
@@ -71,8 +88,13 @@ class VideoRecyclerAdapter(
 
     override fun getItemCount(): Int = videos.size
 
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        adapterScope.cancel()
+    }
+
     // ------------------------
-    // HELPER FUNCTIONS (FIX)
+    // HELPER FUNCTIONS
     // ------------------------
 
     private fun getThumbnail(file: File): Bitmap? {
@@ -82,7 +104,7 @@ class VideoRecyclerAdapter(
             val bitmap = retriever.getFrameAtTime(0)
             retriever.release()
             bitmap
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
     }
@@ -103,7 +125,7 @@ class VideoRecyclerAdapter(
                 )?.toLong() ?: 0L
             retriever.release()
             duration
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0L
         }
     }
@@ -113,7 +135,6 @@ class VideoRecyclerAdapter(
         val seconds = totalSeconds % 60
         val minutes = (totalSeconds / 60) % 60
         val hours = totalSeconds / 3600
-
         return if (hours > 0) {
             String.format("%d:%02d:%02d", hours, minutes, seconds)
         } else {
@@ -124,9 +145,9 @@ class VideoRecyclerAdapter(
     private fun formatSize(bytes: Long): String {
         val mb = bytes / (1024.0 * 1024.0)
         return if (mb >= 1024) {
-            "${(mb / 1024).roundToInt()} GB"
+            String.format("%.0f GB", mb / 1024)
         } else {
-            "${mb.roundToInt()} MB"
+            String.format("%.0f MB", mb)
         }
     }
 

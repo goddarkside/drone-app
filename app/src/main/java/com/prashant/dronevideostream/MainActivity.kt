@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             val url = binding.rtspUrl.text.toString().trim()
 
             if (url.isEmpty()) {
-                Toast.makeText(this, "Enter RTSP / RTMP URL", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.error_enter_url), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

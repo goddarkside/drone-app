@@ -2,4 +2,14 @@
     <string name="app_name">DroneVideoStream</string>
     <string name="play">Play</string>
     <string name="enter_rtsp_url">Enter RTSP URL</string>
+    <string name="error_enter_url">Enter RTSP / RTMP URL</string>
+    <string name="delete_video_title">Delete video?</string>
+    <string name="delete_video_message">This video will be permanently deleted.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="share_video">Share video</string>
+    <string name="format_duration">%d:%02d:%02d</string>
+    <string name="format_duration_short">%02d:%02d</string>
+    <string name="format_size_gb">%d GB</string>
+    <string name="format_size_mb">%d MB</string>
 </resources>

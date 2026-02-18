@@ -49,7 +49,13 @@ class VideoPlayerActivity : AppCompatActivity() {
     }
 
     private fun initVlc() {
-        libVLC = LibVLC(this, arrayListOf())
+        val options = arrayListOf(
+            "--rtsp-tcp",
+            "--network-caching=300",
+            "--drop-late-frames",
+            "--skip-frames"
+        )
+        libVLC = LibVLC(this, options)
         mediaPlayer = MediaPlayer(libVLC)
 
         mediaPlayer?.vlcVout?.apply {
