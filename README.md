@@ -30,7 +30,7 @@ com.prashant.dronevideostream/
 └── res/
     ├── layout/                 # XML layout files
     ├── drawable/               # Custom button backgrounds, icons
-    └── values/                 # Strings, themes, and colors
+    └── values/                 # Strings, themes, and colours
 
 
 🧪 How It Works
@@ -53,16 +53,16 @@ com.prashant.dronevideostream/
 
 ⚙️ Setup & Installation
 	*Clone the repository or download the source.
-	*Add the following dependency in your build.gradle:
+	*Add the following dependency to your build.gradle:
 		implementation 'org.videolan.android:libvlc-all:3.5.0'
 	*Sync your project.
 	*Build and run on a real Android device (API 21+ recommended).
 App LINK   
-	Google Drive Link :https://drive.google.com/drive/folders/1AH7MWYBu3W_rDHDQv1Ceiw2oTMEnCW7S?usp=sharing
+	Google Drive Link:https://drive.google.com/drive/folders/1AH7MWYBu3W_rDHDQv1Ceiw2oTMEnCW7S?usp=sharing
 👤 Author
 Prashant seth
 Android Developer | Drone Tech Enthusiast
 📫 Contact: 
-LinkedIn :https://www.linkedin.com/in/prashant-seth 
-GitHub : https://github.com/goddarkside
-Email : Prashant143seth@gmail.com 
+LinkedIn:https://www.linkedin.com/in/prashant-seth 
+GitHub: https://github.com/goddarkside
+Email: Prashant143seth@gmail.com 
